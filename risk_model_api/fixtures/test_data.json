@@ -1,0 +1,102 @@
+[
+  {
+    "model": "risks.risk",
+    "pk": 67,
+    "fields": {
+      "name": "Automobile",
+      "description": "An automobile insurance."
+    }
+  },
+  {
+    "model": "risks.risk",
+    "pk": 68,
+    "fields": {
+      "name": "House",
+      "description": "A house insurance."
+    }
+  },
+  {
+    "model": "risks.risk",
+    "pk": 69,
+    "fields": {
+      "name": "Prize",
+      "description": "A prize insurance."
+    }
+  },
+  {
+    "model": "risks.field",
+    "pk": 75,
+    "fields": {
+      "name": "Married",
+      "type": "enum",
+      "description": "The ol' ball & chain.",
+      "risk": 67
+    }
+  },
+  {
+    "model": "risks.field",
+    "pk": 76,
+    "fields": {
+      "name": "Name",
+      "type": "text",
+      "description": "Your full name.",
+      "risk": 67
+    }
+  },
+  {
+    "model": "risks.field",
+    "pk": 77,
+    "fields": {
+      "name": "Address",
+      "type": "text",
+      "description": "Your full address.",
+      "risk": 68
+    }
+  },
+  {
+    "model": "risks.field",
+    "pk": 78,
+    "fields": {
+      "name": "State",
+      "type": "text",
+      "description": "Your state.",
+      "risk": 68
+    }
+  },
+  {
+    "model": "risks.field",
+    "pk": 79,
+    "fields": {
+      "name": "Amount",
+      "type": "number",
+      "description": "The prize amount.",
+      "risk": 69
+    }
+  },
+  {
+    "model": "risks.field",
+    "pk": 80,
+    "fields": {
+      "name": "Event Date",
+      "type": "date",
+      "description": "The date of the event that awarded the prize.",
+      "risk": 69
+    }
+  },
+  {
+    "model": "risks.choice",
+    "pk": 58,
+    "fields": {
+      "choice": "Yes",
+      "field": 75
+    }
+  },
+  {
+    "model": "risks.choice",
+    "pk": 59,
+    "fields": {
+      "choice": "No",
+      "field": 75
+    }
+  }
+]
