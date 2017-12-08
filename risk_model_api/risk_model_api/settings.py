@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'risks',
     'rest_framework',
+    'django_extensions',
     'django_nose',
 ]
 

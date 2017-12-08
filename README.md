@@ -2,24 +2,72 @@
 
 ## Overview
 
-The purpose of this app is to showcase my Python skills, specifically the ones related to web development. The app is composed of the following components:
+The purpose of this app is to showcase my web development skills with Python, specifically with [Django REST Framework](http://www.django-rest-framework.org/).
 
-* Risk Model API: A RESTful service implemented with Django REST Framework.
+The app is composed of the following components:
 
-* Risk Model UI: A Single Page application developed with Vue.js.
+* Risk Model API: A restful service implemented with Django REST Framework (a back-end service).
+
+* Risk Model UI: A single page application developed using [Vue.js](https://vuejs.org) (a front-end service).
+
+## Risk Model API
+
+## ER Diagram
+
+<kbd>![Risks App ER Diagram](images/risks_er_diagram.png)</kbd>
+
+The ER diagram above has been generated from the app's models with [django-graphviz](https://code.google.com/archive/p/django-graphviz/).
+
+To install it in your system run the following commands:
+
+    sudo pip install pydotplus
+
+The following command will generate the diagram above:
+
+    python manage.py graph_models risks -o ../images/risk_er_diagram.png
+
+Another option would be generating the app's models from the a ER diagram (which could be created using [ArgoUML](http://argouml.tigris.org/) for instance) using [uml-to-django](https://code.google.com/archive/p/uml-to-django/). I don't particularly like this option given that the generated code might not be compliant with the latest Django specs.
+
+Note that there is a separated entity for choices, which in principle could be an array. In fact, Django makes available [`ArrayField`](https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/fields/#arrayfield). Unfortunately, `ArrayField` can only be used with a Postgres database and for this reason I opted for entity relationships with a foreign keys instead.
+
+## Schema Validation
+
+The JSON schema for the risk type can be found in the file [risk_schema.json](./risk_model_api/schemas/risk_schema.json), which defines the properties allowed in the JSON input (for persisting in the database) and the following constraints:
+
+* Only fields of type 'enum' may have choices.
+* Fields of type 'enum' shall have at least two choices.
+
+These constraints will guarantee that we will only persist valid risk types through the API.
+
+We couldn't impose these contraints to the model using Django's [validators](https://docs.djangoproject.com/en/2.0/ref/validators/), given that ER models need to be built in steps:
+
+* Create a risk type, save it, get its primary key (which I now can use to add fields).
+* Add a field to risk, save it, get its primary key (which I now can use to add choices).
+* Add a choice to field, save it.
+* Add another choice to field, save it.
+
+Until the last step is completed, risk type is an invalid record, but we need to save the intermediate steps to get the primary keys and create the relationships.
 
 ### Dependencies
 
-This app has been developed with Python 3.5.2.
+This app has been developed with Python 3.5.2. Additionally, the following modules are required:
 
-The following are required for development with Django and Django REST Framework:
+#### Django & Django REST Framework
+
+To install them, run the following commands:
 
     sudo pip install django
     sudo pip install djangorestframework
 
-The following is for coverage reports (which we will detail in the 'Running Tests' section):
+#### Django Nose
+
+Given that is good practice to generate coverage reports, this projects uses [django-nose](https://github.com/django-nose/django-nose). To install it, run the following command:
 
     sudo pip install django-nose
+
+Interactive sessions are also useful, thus the project uses [django-extensions](https://github.com/django-extensions/django-extensions). To install it, run the following command:
+
+    sudo pip install django-extensions
 
 ## Running Tests
 
@@ -27,7 +75,7 @@ To run the test suite:
 
     python manage.py test
 
-Which should output something similar to the following:
+Which should output something similar to the following in the terminal:
 
     nosetests --with-coverage --cover-package=risks --cover-erase --cover-html --cover-html-dir=reports --verbosity=1
     Creating test database for alias 'default'...
@@ -44,51 +92,48 @@ Which should output something similar to the following:
     ------------------------------------------------------
     TOTAL                                 78     17    78%
     ----------------------------------------------------------------------
-    Ran 7 tests in 0.164s
+    Ran 6 tests in 0.164s
      
     OK
     Destroying test database for alias 'default'...
 
-By the way, you will also find HTML reports [here](risk_model_api/reports/index.html), these are nicer, as they highlight the lines of code not covered by tests.
+You will also find HTML reports [here](risk_model_api/reports/index.html). These reports highlight the lines of code not covered by tests, which makes much easier to find out where the project is lacking in terms of testing.
 
-Note that the coverage for `risks/models.py` says "0%", that's because of an [issue with django-nose](https://github.com/django-nose/django-nose/issues/180). Although I have chosen to not write tests for the models in isolation, the models are being tested indirectly through the view tests.
+Note that the coverage for `risks/models.py` says "0%". That's because of an [issue with django-nose](https://github.com/django-nose/django-nose/issues/180).
 
-For the untrained eye, not writing such tests might seem like laziness, but that's not the case at all. As TDD developers, we should test behavior, not functions. Ian Cooper explains this better than I could here: [TDD, where all went wrong](https://vimeo.com/68375232), as well as Uncle Bob here: [Giving Up on TDD](http://blog.cleancoder.com/uncle-bob/2016/03/19/GivingUpOnTDD.html).
+Even though I have chosen not to write tests for the models in isolation, the models are being test covered indirectly through view tests.
 
-I used to work for AOL and they used number of tests written (not test coverage unfortunately) as a metric to evaluate the teams, thus everyone would write as many tests as possible. In fact, they write too many tests. Every method in every class had at least a couple of tests. This make the production code insanely coupled to the test code. Several times I had to rewrite and throw away dozens and dozens of tests because of simple refactorings.
+This might look like laziness for the untrained eye, but that's not the case at all: As TDD developers, we should test behavior, not methods/functions.
 
-And still, even though the code had good coverage (at least in the reports), most poeple would neglect to test behavior (e.g., they can figure out how to simulate a given call to a soap end-point or how to mock it in a higher level, so they would neglect to write any behavior that depended on it).
+Ian Cooper explains this better than I ever could here: [TDD, where all went wrong](https://vimeo.com/68375232).
 
-## ER Diagram
+Uncle Bob also had a few words to say about it here: [Giving Up on TDD](http://blog.cleancoder.com/uncle-bob/2016/03/19/GivingUpOnTDD.html).
 
-![Risks App ER Diagram](images/risks_er_diagram.png)
+I used to work for a company where the raw number of tests (not test coverage, unfortunately) was used as a metric to evaluate teams, thus everyone on my team would write as many tests as possible: Every method in every class had at least a couple of tests. This made the production code insanely coupled to the test code: Often I had to rewrite (and many times throw away) dozens and dozens of tests because of a refactoring.
 
-The ER diagram above has been generated from the app's models with [django-graphviz](https://code.google.com/archive/p/django-graphviz/).
+Note that I said "refactoring", thus the behavior didn't change at all. Still, even though the code had good coverage (at least in the reports), most poeple would neglect to test behavior: e.g., they would rather mock a dependency (e.g., a http client) and test the class in isolation, than mock a rest end-point and test the whole thing end-to-end (because in general this would require more effort). 
 
-To install it in your system run the following commands:
+### Setting-up the Database
 
-    sudo pip install pydotplus
+Run the following commands to create the dabase:
 
-The following command will generate the diagram above:
+    python manage.py makemigrations risks
+    python manage.py migrate risks
 
-    python manage.py graph_models risks -o ../images/risk_er_diagram.png
+Run the following commands to import some test data:
 
-Another option would be generating the app's models from the diagram (which could be created using [ArgoUML](http://argouml.tigris.org/) for instance) using [uml-to-django](https://code.google.com/archive/p/uml-to-django/). I don't particularly like this option given that the generated code might not be compliant with the latest Django specs.
+    python manage.py loaddata fixtures/test_data.json
 
+### Runnning the App
 
-Note that there is a separated entity for choices, which in principle could be an array. In fact Django makes available [`ArrayField`](https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/fields/#arrayfield). Unfortunately, `ArrayField` can only be used with Postgres databases and for this reason I opted for a separated table and a relationship with a foreign key instead.
+To start the API in your local computer run the following command:
 
-Django's [validators](https://docs.djangoproject.com/en/2.0/ref/validators/) allows a number of validations on fields and even to relationships between models in a relationship, but given that intermediate records need to be saved before a relationship is created (e.g., a risk type needs to be saved before one can add fields to it), in order to not save data with invalid relationships (a risk type without fields, or a enum field without choices for instance),
-I decided to do schema validation instead.
+    python manage.py runserver
 
-## Schema Validation
+Here are some exemple calls to the API using [curl](https://curl.haxx.se/):
 
-The JSON schema for the risk type can be found in [risk_schema.json](./risk_model_api/schemas/risk_schema.json), which defines the properties allowed in the JSON input (for persisting in the database) and the following constraints:
-
-* Only fields of type 'enum' may have choices.
-
-* Fields of type 'enum' shall have at least two choices.
-
+    curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/risks/
+    curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/risks/70/
 
 ## Developer's Guide
 
@@ -105,17 +150,16 @@ Then you can add an app to the project:
 
     python manage.py startapp risks
 
-In our particular case, "risks" is a REST API app.
+In our particular case, "risks" is a REST API app, implemented with Django REST Framework.
 
-
-### Manage Database
+### Database Management
 
 #### Migrating
 
+Every time the model is modified, we need to create and run the necessary migrations in the database:
+
     python manage.py makemigrations risks
     python manage.py migrate risks
-
-You will need to run this command everytime you create or modify a model (in the model-view-controller sense).
 
 #### Cleaning Up
 
@@ -123,6 +167,9 @@ The following command will cleanup the database:
 
     python manage.py flush
 
+    python manage.py sqlflush
+
+The first flushes the data and the second one the tables.
 
 #### Loading Data
 
@@ -130,15 +177,9 @@ The following command will
 
     python manage.py loaddata fixtures/test_data.json
 
-Where `test_data.json` is a fixture file with the test data.
+Where [test_data.json](fixtures/test_data.json) is a fixture file with the test data. You may also create different fixtures for producting, testing, development, etc.
 
-### Runnning the App
-
-    python manage.py runserver
-
-This command will run the app, which can be browsed at (this address)[http://localhost:8000/].
-
-### Invoking from the Shell
+### Invoking Commands from the Shell
 
 The standard way to start an interactive session:
 
@@ -148,24 +189,32 @@ But a better way is installing (django-extensions)[https://github.com/django-ext
 
     sudo pip install django-extensions
 
-You will also need to add 'django-extensions' to `INSTALLED_APPS`.
+You will also need to add 'django-extensions' to `INSTALLED_APPS`:
 
-`shell_plus` will reload the environment for the notebook every time any modifications are applied to the code.
+    INSTALLED_APPS = [
+        
+        ...
+     
+        'django_extensions',
+    ]
 
-And also iPython and Jupyter:
+
+You may also run commands from a iPython Jupyter notebook. You will need to install the following dependencies:
 
     sudo pip3 install ipython
     sudo pip3 install jupyter
 
-This way you may run commands in an interactive iPython Jupyter notebook:
+To start a iPython Jupyter session run the following command:
 
     python manage.py shell_plus --notebook
 
 This will open a web browser window with the Jupyter project tree. Create a notebook by clicking `new > Django Shell-Plus` and type the code you wish to experiment with:
 
-![An Interactive Jupyter iPython Django Shell-Plus Notebook](images/jupyter1.png)
+<kbd>![An Interactive Jupyter iPython Django Shell-Plus Notebook](images/jupyter_notebook.png)</kbd>
 
 Note `%load_ext autoreload` and `%autoreload 2`: These will reload any modifications in the project source files. 
+
+There is an example notebook named [TestDataNotebook.ipynb](TestDataNotebook.ipynb). I used this notebook to create the test data.
 
 ### Test Coverage
 
@@ -173,7 +222,7 @@ To run test coverage you will to install django-nose:
 
     sudo pip install django-nose
 
-And add it to your `settings.py`:
+And add the following configuration to your settings.py:
 
     INSTALLED_APPS = [
         
@@ -182,17 +231,16 @@ And add it to your `settings.py`:
         'django_nose',
     ]
      
-    ...
-     
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
      
     NOSE_ARGS = [
         '--with-coverage',
         '--cover-package=risks',
+        '--cover-erase',
+        '--cover-html',
+        '--cover-html-dir=reports',
     ]
 
-## Sublime Text
+## Risk Model UI
 
-Just for future reference, here are some nice plugins for sublime text 3:
-
-* (Sublime Pretty JSON)[https://github.com/dzhibas/SublimePrettyJson]: For formatting JSON.
+TODO
