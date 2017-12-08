@@ -1,2 +1,5 @@
 *.pyc
 .ipynb_checkpoints
+.coverags
+migrations
+db.sqlite3
