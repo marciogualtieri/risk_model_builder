@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/risk_model_api/schema#",
+  "title": "Risk Type",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+                 "oneOf": [
+                   { "type": "object",
+                     "properties": {
+                       "name": { "type": "string" },
+                       "type": { "type": "string",
+                                 "enum": ["enum"] },
+                       "description": { "type": "string" },
+                       "choices": {
+                         "type": "array",
+                         "items": { "type": "string" },
+                         "minItems": 2,
+                         "uniqueItems": true
+                       }
+                     },
+                     "required": ["name", "type", "description", "choices"],
+                     "additionalProperties": false
+                   },
+                   { "type": "object",
+                     "properties": {
+                       "name": { "type": "string" },
+                       "type": { "type": "string",
+                                 "enum": ["text", "number", "date"] },
+                       "description": { "type": "string" }
+                      },
+                      "required": ["name", "type", "description"],
+                      "additionalProperties": false
+                    }
+                  ]
+                 
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "required": ["name", "description", "fields"],
+  "additionalProperties": false
+}

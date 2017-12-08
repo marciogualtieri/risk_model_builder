@@ -1,52 +1,39 @@
-from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-import json
+from risks.tests.test_utils import TestUtils
 
-class RiskViewSetTests(APITestCase):
-
-    AUTOMOBILE_RISK_ID = 67
+class RiskViewSetTests(APITestCase, TestUtils):
 
     fixtures = ['fixtures/test_data.json']
-
-    def __validate_enum_field__(self, enum_field):
-        self.assertEqual(enum_field['id'], 75)
-        self.assertEqual(enum_field['name'], 'Married')
-        self.assertEqual(enum_field['description'], "The ol\' ball & chain.")
-        self.assertEqual(enum_field['type'], 'enum')
-        self.assertEqual(len(enum_field['choices']), 2)
-        self.assertEqual(enum_field['choices'][0], 'Yes')
-        self.assertEqual(enum_field['choices'][1], 'No')
-
-    def __validate_text_field__(self, text_field):
-        self.assertEqual(text_field['id'], 76)
-        self.assertEqual(text_field['name'], 'Name')
-        self.assertEqual(text_field['description'], 'Your full name.')
-        self.assertEqual(text_field['type'], 'text')
-
-    def __validate_fields__(self, fields):
-        self.__validate_enum_field__(fields[0])
-        self.__validate_text_field__(fields[1])
-
-    def __validate_risk__(self, risk):
-        self.assertEqual(risk['id'], self.AUTOMOBILE_RISK_ID)
-        self.assertEqual(risk['name'], 'Automobile')
-        self.assertEqual(risk['description'], 'An automobile insurance.')
-        self.assertEqual(len(risk['fields']), 2)
-        self.__validate_fields__(risk['fields'])
-
-    def __parse_response__(self, response):
-        return json.loads(response.content.decode('utf-8'))
 
     def test_get_all_risks(self):
         response = self.client.get('/risks/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        page = self.__parse_response__(response)
-        self.assertEqual(page['count'], 3)
-        self.assertIsNotNone(page['results'])
+        risks = self.__parse_response__(response)
+        self.assertEqual(len(risks), 3)
+        self.assertIsNotNone(risks)
 
-    def test_get_a_specific_risk(self):
+    def test_get_a_risk_by_primary_key(self):
         response = self.client.get('/risks/%d/' % self.AUTOMOBILE_RISK_ID)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         risk = self.__parse_response__(response)
         self.__validate_risk__(risk)
+
+    def test_create_a_risk(self):
+        response = self.client.post('/risks/', self.VALID_TEST_RISK, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_attempt_to_create_a_risk_missing_fields(self):
+        response = self.client.post('/risks/', self.MISSING_FIELDS_TEST_RISK, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("'fields' is a required property" in self.__decode_content__(response))
+
+    def test_attempt_to_create_a_risk_field_non_enum_with_choices(self):
+        response = self.client.post('/risks/', self.NON_ENUM_WITH_CHOICES_TEST_RISK, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("is not valid under any of the given schemas" in self.__decode_content__(response))
+
+    def test_attempt_to_create_a_risk_field_enum_with_less_than_two_choices(self):
+        response = self.client.post('/risks/', self.ENUM_WITH_LESS_THAN_TWO_CHOICES_TEST_RISK, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertTrue("is not valid under any of the given schemas" in self.__decode_content__(response))

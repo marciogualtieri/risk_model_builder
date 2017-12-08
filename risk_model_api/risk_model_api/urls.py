@@ -3,9 +3,8 @@ from rest_framework import routers
 from risks import views
 
 router = routers.DefaultRouter()
-router.register(r'risks', views.RiskViewSet)
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    url(r'^risks/$', views.RiskList.as_view()),
+    url(r'^risks/(?P<pk>[0-9]+)/$', views.RiskDetail.as_view()),
 ]

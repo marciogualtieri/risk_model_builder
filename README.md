@@ -2,20 +2,19 @@
 
 ## Overview
 
-* Python 3.5.2
+The purpose of this app is to showcase my Python skills, specifically the ones related to web development. The app is composed of the following components:
 
-* pip 9.0.1
+* Risk Model API: A RESTful service implemented with Django REST Framework.
+* Risk Model UI: A Single Page application developed with Vue.js.
 
 ## Running Tests
 
 ### Dependencies
 
+This app has been developed with Python 3.5.2.
+
     sudo pip install django
     sudo pip install djangorestframework
-
-    sudo pip install jsonfield
-
-    (django-jsonfield)[https://github.com/dmkoch/django-jsonfield]
 
 
     sudo pip install django-nose
