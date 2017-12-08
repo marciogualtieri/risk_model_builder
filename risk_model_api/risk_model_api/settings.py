@@ -39,7 +39,17 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'risks',
     'rest_framework',
-    'django_extensions',
+    'django_nose',
+]
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+NOSE_ARGS = [
+    '--with-coverage',
+    '--cover-package=risks',
+    '--cover-erase',
+    '--cover-html',
+    '--cover-html-dir=reports',
 ]
 
 REST_FRAMEWORK = {
