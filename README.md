@@ -18,14 +18,6 @@ The app is composed of the following components:
 
 The ER diagram above has been generated from the app's models with [django-graphviz](https://code.google.com/archive/p/django-graphviz/).
 
-To install it in your system run the following commands:
-
-    sudo pip install pydotplus
-
-The following command will generate the diagram above:
-
-    python manage.py graph_models risks -o ../images/risk_er_diagram.png
-
 Another option would be generating the app's models from the a ER diagram (which could be created using [ArgoUML](http://argouml.tigris.org/) for instance) using [uml-to-django](https://code.google.com/archive/p/uml-to-django/). I don't particularly like this option given that the generated code might not be compliant with the latest Django specs.
 
 Note that there is a separated entity for choices, which in principle could be an array. In fact, Django makes available [`ArrayField`](https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/fields/#arrayfield). Unfortunately, `ArrayField` can only be used with a Postgres database and for this reason I opted for entity relationships with a foreign keys instead.
@@ -68,6 +60,16 @@ Given that is good practice to generate coverage reports, this projects uses [dj
 Interactive sessions are also useful, thus the project uses [django-extensions](https://github.com/django-extensions/django-extensions). To install it, run the following command:
 
     sudo pip install django-extensions
+
+#### Django Graphviz
+
+It's convenient to generate an ER diagram from Django's models. To install it in your system run the following command:
+
+    sudo pip install pydotplus
+
+To generate an ER diagram as a image, run the following command:
+
+    python manage.py graph_models risks -o ../images/risk_er_diagram.png
 
 ## Running Tests
 
@@ -137,14 +139,13 @@ Here are some exemple calls to the API using [curl](https://curl.haxx.se/):
 
 ## Developer's Guide
 
-For my all future reference, I'm going to document the entire process of creating a REST API in Python/Django.
+For my own future reference, I'm going to document the entire process of creating a REST API in Python/Django.
 
 ### Creating an App
 
 First you need to create a project, which is comprised of one or more apps:
 
     django-admin startproject risk_model_api
-
 
 Then you can add an app to the project:
 
@@ -163,13 +164,15 @@ Every time the model is modified, we need to create and run the necessary migrat
 
 #### Cleaning Up
 
-The following command will cleanup the database:
+The following commands will cleanup the database:
 
     python manage.py flush
 
+(Only the data)
+
     python manage.py sqlflush
 
-The first flushes the data and the second one the tables.
+(Also the tables)
 
 #### Loading Data
 
@@ -177,15 +180,15 @@ The following command will
 
     python manage.py loaddata fixtures/test_data.json
 
-Where [test_data.json](fixtures/test_data.json) is a fixture file with the test data. You may also create different fixtures for producting, testing, development, etc.
+Where [test_data.json](fixtures/test_data.json) is a [fixture](https://docs.djangoproject.com/en/2.0/howto/initial-data/) file with the test data. You may also create different fixtures for production, testing, development, etc.
 
-### Invoking Commands from the Shell
+### Invoking Commands from the Interactive Shell
 
 The standard way to start an interactive session:
 
     python manage.py shell
 
-But a better way is installing (django-extensions)[https://github.com/django-extensions/django-extensions]:
+But a even better way is to install (django-extensions)[https://github.com/django-extensions/django-extensions]:
 
     sudo pip install django-extensions
 
@@ -214,7 +217,7 @@ This will open a web browser window with the Jupyter project tree. Create a note
 
 Note `%load_ext autoreload` and `%autoreload 2`: These will reload any modifications in the project source files. 
 
-There is an example notebook named [TestDataNotebook.ipynb](TestDataNotebook.ipynb). I used this notebook to create the test data.
+There is an example notebook named [TestDataNotebook.ipynb](TestDataNotebook.ipynb) in the project's root directory. I used this notebook to create the test data, by the way.
 
 ### Test Coverage
 
