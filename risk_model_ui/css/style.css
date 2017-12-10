@@ -1,0 +1,23 @@
+.navbar-brand img {
+  max-width: 150px;
+  height:auto;
+}
+
+.navbar-default {
+    background-color: #229922;
+}
+
+.brand {
+  display: inline-block;
+}
+
+.logo span {
+  font-size: 250%;
+  color: black;
+  font-family: fantasy;
+  margin-left: 100px;
+}
+
+header {
+  padding-bottom: 50px;
+}
