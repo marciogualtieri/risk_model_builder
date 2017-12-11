@@ -3,17 +3,18 @@
 </template>
 
 <script>
+  import {API_BASE_URL} from './config.js';
 
-export default {
-  name: 'app',
-  data() {
-    return {
-      risks: []
-    };
-  },
-  created: function() {
-      $.getJSON('http://127.0.0.1:8000/risks/')
-          .done(data => {this.risks = data;});
+  export default {
+    name: 'app',
+    data() {
+      return {
+        risks: []
+      };
+    },
+    created: function() {
+        $.getJSON(API_BASE_URL + '/risks/')
+            .done(data => {this.risks = data;});
+    }
   }
-}
 </script>

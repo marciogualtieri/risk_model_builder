@@ -6,6 +6,10 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 import App from './App.vue'
 import RiskList from './RiskList.vue'
 import RiskDetail from './RiskDetail.vue'
+import jQuery from 'jquery';
+
+window.jQuery = jQuery;
+window.$ = jQuery;
 
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);

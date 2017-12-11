@@ -25,7 +25,7 @@
 <style scoped>
 fieldset {
   border: 1px solid #781351;
-  width: 500px;
+  width: 750px;
   background-color: #229922;
 }
 

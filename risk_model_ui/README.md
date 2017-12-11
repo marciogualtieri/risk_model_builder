@@ -66,3 +66,21 @@ Add the following imports to `main.js`:
 The easiest way is to use [unpkg](https://unpkg.com/#/). Just add the following to your index.html:
 
     <script src="https://unpkg.com/jquery@3.1.1"></script>
+
+### Testing
+
+To install [karma-webpack](https://github.com/webpack-contrib/karma-webpack)
+
+    npm i -D karma-webpack
+
+
+    npm install karma-chrome-launcher --save-dev
+    npm install karma-mocha --save-dev
+    npm install karma-sinon-chai --save-dev
+    npm install karma-sourcemap-loader --save-dev
+    npm install karma-spec-reporter --save-dev
+    npm install karma-coverage --save-dev
+    npm install chai --save-dev
+    npm install sinon --save-dev
+    npm install sinon-chai --save-dev
+

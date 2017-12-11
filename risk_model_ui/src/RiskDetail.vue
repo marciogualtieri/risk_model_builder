@@ -7,6 +7,7 @@
 
 <script>
     import FieldForm from './FieldForm.vue';
+    import {API_BASE_URL} from './config.js';
 
     export default {
         name: 'risk-detail',
@@ -20,7 +21,7 @@
         },
         created() {
             let id = this.$route.params.id;
-            $.getJSON(`http://127.0.0.1:8000/risks/${id}/`)
+            $.getJSON(API_BASE_URL + `/risks/${id}/`)
                 .done(data => {this.risk = data;})
         }
     };

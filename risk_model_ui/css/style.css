@@ -1,22 +1,25 @@
-.navbar-brand img {
-  max-width: 150px;
-  height:auto;
+.navbar-default {
+    background-color: #229922 !important;
 }
 
-.navbar-default {
-    background-color: #229922;
+.navbar {
+  min-height: 200px !important;
+}
+
+.navbar-header {
+  padding: 15px;
+}
+
+header {
+  padding-bottom: 50px;
 }
 
 .brand {
-  display: inline-block;
-}
-
-.logo span {
-  font-size: 250%;
+  font-size: 300%;
   color: black;
   font-family: fantasy;
-  margin-left: 100px;
-}
+  margin-left: 30px;
+  margin-top: 60px;
 
 header {
   padding-bottom: 50px;
