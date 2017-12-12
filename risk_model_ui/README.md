@@ -20,11 +20,11 @@
 
 ## Overview
 
-This is a single page web application developed with [Vue.js](https://vuejs.org) and [Webapack](https://webpack.js.org/) meant to show my front-end development skills.
+This is a single page web application developed with [Vue.js](https://vuejs.org) and [Webapack](https://webpack.js.org/) with the purpose of showing my front-end development skills.
 
-The app retrieves risk types (more precisely their definitions, i.e., name, description and fields) from the back-end service and builds a form with inputs corrresponding to each of the risk type's fields. In a nutshell, the forms in the UI are built dynamically according with the specs retrieved from the API.
+The app retrieves risk types (or more precisely their definitions, i.e., name, description and fields) from the back-end service and builds a form with inputs corrresponding to each of the risk type's fields. In a nutshell, the forms in the UI are built dynamically according with the definitions retrieved from the API.
 
-The UI consists of a main page that simply list all of the available risk types and of a detail page for each risk type. By clicking on a specific risk type, the user navigates to a detail page that shows the riks type corresponding application form.
+The UI consists of a main page that simply list all of the available risk types and a detail page for each. By clicking on a specific risk type, the user navigates to a detail page that shows the riks type corresponding application form.
 
 <kbd>![Risks App ER Diagram](../images/run_ui.gif)</kbd>
 

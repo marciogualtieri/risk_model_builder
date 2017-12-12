@@ -28,17 +28,17 @@
 
 ## Overview
 
-The purpose of this app is to showcase my web development skills with Python (specifically the [Django REST Framework](http://www.django-rest-framework.org/)).
+The purpose of this app is showcasing my web development skills with Python (specifically the [Django REST Framework](http://www.django-rest-framework.org/)).
 
-This app is a back-end service (REST), which stores the definition of risk types. A definition consists of a name, a description and one or more fields. A fields could be a text, a number, a date or an enumeration.
+This app is a back-end service (JSON REST), which stores the definition of risk types. A definition consists of a name, a description and one or more fields. A fields can be a text, a number, a date or an enumeration.
 
-At the moment risk types can be created either by calling the models API in the interactive shell or by submiting a JSON definition for the risk type through a POST request. There's no UI to create risk types at the moment. The UI only builds application forms from the risk type definitions retrieved from the API.
+At the moment risk types can be created either by calling the models from the Django API in an interactive shell or by submiting a JSON definition for the risk type through a POST request. There's no UI to create risk types at the moment. The UI only builds application forms from the risk type definitions retrieved from the API.
 
 <kbd>![Risks App ER Diagram](../images/run_api.gif)</kbd>
 
 ## Demo the App
 
-You may demo the API (deployed to Amazon's AWS with [zappa](https://github.com/Miserlou/Zappa)) using the following links:
+You may demo the API (deployed to Amazon's AWS Lambda with [zappa](https://github.com/Miserlou/Zappa)) using the following links:
 
 * [/risks/](https://yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com/production/risks/) (All Risks)
 * [/risks/70](https://yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com/production/risks/70/) (Only Risk with ID 70)
@@ -52,11 +52,11 @@ You may also use [curl](https://curl.haxx.se/):
 
 <kbd>![Risks App ER Diagram](../images/risks_er_diagram.png)</kbd>
 
-The ER diagram above has been generated from the app's models with [django-graphviz](https://code.google.com/archive/p/django-graphviz/).
+The ER diagram above has been generated from the Django models with [django-graphviz](https://code.google.com/archive/p/django-graphviz/).
 
-Another option would be generating the app's models from the a ER diagram (which could be created using [ArgoUML](http://argouml.tigris.org/) for instance) with [uml-to-django](https://code.google.com/archive/p/uml-to-django/). I don't particularly like this option given that the generated code might not be compliant with the latest Django specs.
+Another option would be generating the Django models from the an ER diagram (which could be created using [ArgoUML](http://argouml.tigris.org/)) with [uml-to-django](https://code.google.com/archive/p/uml-to-django/). I don't particularly like this option given that the generated code might not be compliant with the latest Django specs.
 
-Note that there is a separated entity for choices, which in principle could be an array. In fact, Django makes available [`ArrayField`](https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/fields/#arrayfield). Unfortunately, `ArrayField` can only be used with a Postgres database and for this reason I opted for entity relationships with foreign keys instead.
+Note that there is a separated entity for choices, which in principle could be an array. In fact, Django makes available [`ArrayField`](https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/fields/#arrayfield). Unfortunately, `ArrayField` can only be used with a Postgres database and for this reason I opted for relationships with foreign keys instead.
 
 ## Schema Validation
 
@@ -67,14 +67,14 @@ The JSON schema for the risk type can be found in the file [risk_model_api/schem
 
 These constraints will guarantee that we will only persist valid risk types through the API.
 
-We couldn't impose these contraints to the model using Django's [validators](https://docs.djangoproject.com/en/2.0/ref/validators/), given that ER models need to be built in steps:
+We couldn't impose these contraints to the model using Django's [validators](https://docs.djangoproject.com/en/2.0/ref/validators/), given that the data need to be built in steps:
 
 * Create a risk type, save it, get its primary key (which now can used to add fields).
 * Add a field to risk, save it, get its primary key (which now can used to add choices).
 * Add a choice to field, save it.
 * Add another choice to field, save it.
 
-Until the last step is completed, risk type is an invalid record, but we need to save the intermediate steps to get the primary keys and create the relationships.
+Until the last step is completed, risk type is an invalid record, but we need to save the intermediate steps to get the primary keys to create the relationships.
 
 ## Dependencies
 

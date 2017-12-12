@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]', 'yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -73,7 +72,10 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'localhost:8080',
+    'marciogualtieri.github.io',
+)
 
 ROOT_URLCONF = 'risk_model_api.urls'
 
