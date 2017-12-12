@@ -60,7 +60,7 @@ Note that there is a separated entity for choices, which in principle could be a
 
 ## Schema Validation
 
-The JSON schema for the risk type can be found in the file [risk_model_api/schemas/risk_schema.json](./risk_model_api/schemas/risk_schema.json), which defines the properties allowed in the JSON input (for persisting in the database using a POST request) and the following constraints:
+The JSON schema for the risk type can be found in the file [schemas/risk_schema.json](./schemas/risk_schema.json), which defines the properties allowed in the JSON input (for persisting in the database using a POST request) and the following constraints:
 
 * Only fields of type 'enum' may have choices.
 * Fields of type 'enum' shall have at least two choices.
