@@ -2,11 +2,13 @@
 
 ## Overview
 
-The purpose of this app is to showcase my web development skills with Python, specifically with [Django REST Framework](http://www.django-rest-framework.org/).
+The purpose of this app is to showcase my web development skills with Python (specifically the [Django REST Framework](http://www.django-rest-framework.org/)).
 
-This app consists of a REST API, which stores the definition of risk types. A risk type has a name a description and one or more fields. Each of its fields could be text, numeric, date or a enumeration.
+This app is a back-end service (REST), which stores the definition of risk types. A definition consists of a name, a description and one or more fields. A fields could be a text, a number, a date or an enumeration.
 
-At the moment, risk types can be created either by directly running database commands, executing the models in the interactive shell or by submiting a JSON definition through a POST request to the API. There's no UI to create risk types at the moment.
+At the moment risk types can be created either by calling the models API in the interactive shell or by submiting a JSON definition for the risk type through a POST request. There's no UI to create risk types at the moment. The UI only builds application forms from the risk type definitions retrieved from the API.
+
+<kbd>![Risks App ER Diagram](../images/run_api.gif)</kbd>
 
 ## ER Diagram
 
@@ -14,13 +16,13 @@ At the moment, risk types can be created either by directly running database com
 
 The ER diagram above has been generated from the app's models with [django-graphviz](https://code.google.com/archive/p/django-graphviz/).
 
-Another option would be generating the app's models from the a ER diagram (which could be created using [ArgoUML](http://argouml.tigris.org/) for instance) using [uml-to-django](https://code.google.com/archive/p/uml-to-django/). I don't particularly like this option given that the generated code might not be compliant with the latest Django specs.
+Another option would be generating the app's models from the a ER diagram (which could be created using [ArgoUML](http://argouml.tigris.org/) for instance) with [uml-to-django](https://code.google.com/archive/p/uml-to-django/). I don't particularly like this option given that the generated code might not be compliant with the latest Django specs.
 
-Note that there is a separated entity for choices, which in principle could be an array. In fact, Django makes available [`ArrayField`](https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/fields/#arrayfield). Unfortunately, `ArrayField` can only be used with a Postgres database and for this reason I opted for entity relationships with a foreign keys instead.
+Note that there is a separated entity for choices, which in principle could be an array. In fact, Django makes available [`ArrayField`](https://docs.djangoproject.com/en/2.0/ref/contrib/postgres/fields/#arrayfield). Unfortunately, `ArrayField` can only be used with a Postgres database and for this reason I opted for entity relationships with foreign keys instead.
 
 ## Schema Validation
 
-The JSON schema for the risk type can be found in the file [risk_schema.json](./risk_model_api/schemas/risk_schema.json), which defines the properties allowed in the JSON input (for persisting in the database) and the following constraints:
+The JSON schema for the risk type can be found in the file [risk_model_api/schemas/risk_schema.json](./risk_model_api/schemas/risk_schema.json), which defines the properties allowed in the JSON input (for persisting in the database using a POST request) and the following constraints:
 
 * Only fields of type 'enum' may have choices.
 * Fields of type 'enum' shall have at least two choices.
@@ -29,8 +31,8 @@ These constraints will guarantee that we will only persist valid risk types thro
 
 We couldn't impose these contraints to the model using Django's [validators](https://docs.djangoproject.com/en/2.0/ref/validators/), given that ER models need to be built in steps:
 
-* Create a risk type, save it, get its primary key (which I now can use to add fields).
-* Add a field to risk, save it, get its primary key (which I now can use to add choices).
+* Create a risk type, save it, get its primary key (which now can used to add fields).
+* Add a field to risk, save it, get its primary key (which now can used to add choices).
 * Add a choice to field, save it.
 * Add another choice to field, save it.
 
@@ -42,18 +44,18 @@ This app has been developed with Python 3.5.2. Additionally, the following modul
 
 ### Django & Django REST Framework
 
-To install them, run the following commands:
+To install them:
 
     sudo pip install django
     sudo pip install djangorestframework
 
 ### Django Nose
 
-Given that is good practice to generate coverage reports, this projects uses [django-nose](https://github.com/django-nose/django-nose). To install it, run the following command:
+Given that is good practice to generate coverage reports, this projects uses [django-nose](https://github.com/django-nose/django-nose). To install it:
 
     sudo pip install django-nose
 
-Interactive sessions are also useful, thus the project uses [django-extensions](https://github.com/django-extensions/django-extensions). To install it, run the following command:
+Interactive sessions are also useful, thus the project uses [django-extensions](https://github.com/django-extensions/django-extensions). To install it:
 
     sudo pip install django-extensions
 
@@ -83,15 +85,17 @@ Note the domains used in this project under `CORS_ORIGIN_WHITELIST`.
 
 ### Django Graphviz
 
-It's convenient to generate an ER diagram from Django's models. To install it in your system run the following command:
+It's convenient to generate an ER diagram from Django's models. To install it in your system:
 
     sudo pip install pydotplus
 
-To generate an ER diagram as a image, run the following command:
+To generate an ER diagram as a image:
 
     python manage.py graph_models risks -o ../images/risk_er_diagram.png
 
 ## Running Tests
+
+<kbd>![Risks App ER Diagram](../images/run_api_tests.gif)</kbd>
 
 To run the test suite:
 
@@ -123,7 +127,7 @@ You will also find HTML reports [here](risk_model_api/reports/index.html). These
 
 Note that the coverage for `risks/models.py` says "0%". That's because of an [issue with django-nose](https://github.com/django-nose/django-nose/issues/180).
 
-Even though I have chosen not to write tests for the models in isolation, the models are being test covered indirectly through view tests.
+Even though I have chosen not to write tests for the models in isolation, the models are being tested indirectly through view tests.
 
 This might look like laziness for the untrained eye, but that's not the case at all: As TDD developers, we should test behavior, not methods/functions.
 
@@ -131,24 +135,24 @@ Ian Cooper explains this better than I ever could here: [TDD, where all went wro
 
 Uncle Bob also had a few words to say about it here: [Giving Up on TDD](http://blog.cleancoder.com/uncle-bob/2016/03/19/GivingUpOnTDD.html).
 
-I used to work for a company where the raw number of tests (not test coverage, unfortunately) was used as a metric to evaluate teams, thus everyone on my team would write as many tests as possible: Every method in every class had at least a couple of tests. This made the production code insanely coupled to the test code: Often I had to rewrite (and many times throw away) dozens and dozens of tests because of a refactoring.
+I used to work for a company where the raw number of tests (not test coverage, unfortunately) was used as a metric to evaluate teams, thus everyone on my team would write as many tests as possible: Every method in every class had at least a couple of tests. This made the production code insanely coupled to the test code: Often I had to rewrite (and many times throw away) dozens and dozens of tests because of a simple refactoring.
 
-Note that I said "refactoring", thus the behavior didn't change at all. Still, even though the code had good coverage (at least in the reports), most poeple would neglect to test behavior: e.g., they would rather mock a dependency (e.g., a http client) and test the class in isolation, than mock a rest end-point and test the whole thing end-to-end (because in general this would require more effort). 
+Note that I said "refactoring", thus the behavior didn't change at all. Still, even though the code had good coverage (at least in the reports), most poeple would neglect to test behavior: e.g., they would rather mock a dependency (e.g., a http client) and test a class in isolation, than mock a rest end-point and test the whole thing end-to-end (because most of the times this would require more effort). 
 
 ## Setting-up the Database
 
-Run the following commands to create the dabase:
+To create the dabase:
 
     python manage.py makemigrations risks
     python manage.py migrate risks
 
-Run the following commands to import some test data:
+To import some test data:
 
     python manage.py loaddata fixtures/test_data.json
 
 ## Runnning the App
 
-To start the API in your local computer run the following command:
+To start the API in your local computer:
 
     python manage.py runserver
 
@@ -184,7 +188,7 @@ Every time the model is modified, we need to create and run the necessary migrat
 
 #### Cleaning Up
 
-The following commands will cleanup the database:
+To cleanup the database:
 
     python manage.py flush
 
@@ -196,11 +200,15 @@ The following commands will cleanup the database:
 
 #### Loading Data
 
-The following command will 
+To load some data into the database:
 
     python manage.py loaddata fixtures/test_data.json
 
-Where [test_data.json](fixtures/test_data.json) is a [fixture](https://docs.djangoproject.com/en/2.0/howto/initial-data/) file with the test data. You may also create different fixtures for production, testing, development, etc.
+Where [fixtures/test_data.json](fixtures/test_data.json) is a [fixture](https://docs.djangoproject.com/en/2.0/howto/initial-data/) file with the test data. You may also create different fixtures for production, testing, development, etc.
+
+To laod data for "production" (the demo deployment):
+
+    python manage.py loaddata fixtures/prod_data.json
 
 ### Invoking Commands from the Interactive Shell
 
@@ -227,7 +235,7 @@ You may also run commands from a iPython Jupyter notebook. You will need to inst
     sudo pip3 install ipython
     sudo pip3 install jupyter
 
-To start a iPython Jupyter session run the following command:
+To start a iPython Jupyter session:
 
     python manage.py shell_plus --notebook
 
@@ -235,7 +243,7 @@ This will open a web browser window with the Jupyter project tree. Create a note
 
 <kbd>![An Interactive Jupyter iPython Django Shell-Plus Notebook](../images/jupyter_notebook.png)</kbd>
 
-Note `%load_ext autoreload` and `%autoreload 2`: These will reload any modifications in the project source files. 
+Note `%load_ext autoreload` and `%autoreload 2`: These will reload the shell when any modifications are applied to the project source files. 
 
 There is an example notebook named [TestDataNotebook.ipynb](TestDataNotebook.ipynb) in the project's root directory. I used this notebook to create the test data, by the way.
 

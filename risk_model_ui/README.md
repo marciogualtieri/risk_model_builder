@@ -4,9 +4,11 @@
 
 This is a single page web application developed with [Vue.js](https://vuejs.org) and [Webapack](https://webpack.js.org/) meant to show my front-end development skills.
 
-The app retrieves risk types (more precisely their definitions, i.e., name, description, fields and their respective definitions as well) from the back-end service and builds a form with inputs corrresponding to each of the risk type's fields.
+The app retrieves risk types (more precisely their definitions, i.e., name, description and fields) from the back-end service and builds a form with inputs corrresponding to each of the risk type's fields. In a nutshell, the forms in the UI are built dynamically according with the specs retrieved from the API.
 
-The UI consists of a main page that simply list all of the available risk types and of a detail page for each risk type. By clicking on an specific risk type, the user navigates to a detail page that shows the riks type corresponding form.
+The UI consists of a main page that simply list all of the available risk types and of a detail page for each risk type. By clicking on a specific risk type, the user navigates to a detail page that shows the riks type corresponding application form.
+
+<kbd>![Risks App ER Diagram](../images/run_ui.gif)</kbd>
 
 ### Running the App
 
@@ -19,6 +21,8 @@ To run the UI with hot reload locally:
     npm run dev
 
 ### Running Tests
+
+<kbd>![Risks App ER Diagram](../images/run_ui_tests.gif)</kbd>
 
 To run [Jasmine tests](https://jasmine.github.io/):
 
@@ -62,11 +66,11 @@ The command above should output something similar to the following in the termin
     Lines        : 90.75% ( 265/292 )
     ================================================================================
 
-Note that we haven't reached 100% coverage (because of the router configuration, I reckon), but I don't think that's an issue, given that every single component is being tested.
+Note that we haven't reached 100% coverage (because of the router code), but I don't think that's an issue, given that every single component is being tested.
 
 ### Building the App
 
-Build for production with minification:
+To build for production with minification:
 
     run build
 
@@ -129,7 +133,7 @@ To install [karma-webpack](https://github.com/webpack-contrib/karma-webpack)
 
     npm install -D karma-webpack
 
-Which also has the following dependencies:
+Which itself has the following dependencies:
 
     npm install karma-chrome-launcher --save-dev
     npm install karma-mocha --save-dev

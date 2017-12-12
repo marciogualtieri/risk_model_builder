@@ -3,7 +3,7 @@ from risks.models import Risk
 
 class TestUtils:
 
-    AUTOMOBILE_RISK_ID = 70
+    AUTOMOBILE_RISK_ID = 67
 
     VALID_TEST_RISK = {
                   'name': 'Test Risk',
