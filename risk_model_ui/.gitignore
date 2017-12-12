@@ -3,7 +3,7 @@ node_modules/
 npm-debug.log
 yarn-error.log
 coverage
-dist
+/dist
 
 # Editor directories and files
 .idea
