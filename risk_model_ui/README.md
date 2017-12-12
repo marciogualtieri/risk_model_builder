@@ -1,5 +1,23 @@
 # Risk Model UI
 
+## Table of Contents
+
+<!-- MarkdownTOC -->
+
+- Overview
+- Demo the App
+- Running Tests
+- Running the App
+- Building the App
+- Developer's Guide
+    - Setting Up Vue CLI
+    - Creating a Project
+    - Bootstrap
+    - jQuery
+    - Karma
+
+<!-- /MarkdownTOC -->
+
 ## Overview
 
 This is a single page web application developed with [Vue.js](https://vuejs.org) and [Webapack](https://webpack.js.org/) meant to show my front-end development skills.
@@ -10,17 +28,11 @@ The UI consists of a main page that simply list all of the available risk types 
 
 <kbd>![Risks App ER Diagram](../images/run_ui.gif)</kbd>
 
-### Running the App
+## Demo the App
 
-To install all dependencies:
+The UI has been deployed to GitHub Pages [here](https://marciogualtieri.github.io/risk_model_builder/risk_model_ui/demo/). Give it a try!
 
-    npm install
-
-To run the UI with hot reload locally:
-
-    npm run dev
-
-### Running Tests
+## Running Tests
 
 <kbd>![Risks App ER Diagram](../images/run_ui_tests.gif)</kbd>
 
@@ -68,7 +80,17 @@ The command above should output something similar to the following in the termin
 
 Note that we haven't reached 100% coverage (because of the router code), but I don't think that's an issue, given that every single component is being tested.
 
-### Building the App
+## Running the App
+
+To install all dependencies:
+
+    npm install
+
+To run the UI with hot reload locally:
+
+    npm run dev
+
+## Building the App
 
 To build for production with minification:
 

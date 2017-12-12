@@ -1,5 +1,31 @@
 # Risk Model API
 
+## Table of Contents
+
+<!-- MarkdownTOC-->
+
+- Overview
+- Demo the App
+- ER Diagram
+- Schema Validation
+- Dependencies
+    - Django & Django REST Framework
+    - Django Nose
+    - Django CORS Headers
+    - Django Graphviz
+- Running Tests
+- Setting-up the Database
+- Runnning the App
+- Developer's Guide
+    - Creating an App
+    - Database Management
+    - Invoking Commands from the Interactive Shell
+    - Test Coverage
+    - Deployment to AWS
+
+<!-- /MarkdownTOC -->
+
+
 ## Overview
 
 The purpose of this app is to showcase my web development skills with Python (specifically the [Django REST Framework](http://www.django-rest-framework.org/)).
