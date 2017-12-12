@@ -1,0 +1,26 @@
+.navbar-default {
+    background-color: #229922 !important;
+}
+
+.navbar {
+  min-height: 200px !important;
+}
+
+.navbar-header {
+  padding: 15px;
+}
+
+header {
+  padding-bottom: 50px;
+}
+
+.brand {
+  font-size: 300%;
+  color: black;
+  font-family: fantasy;
+  margin-left: 30px;
+  margin-top: 60px;
+
+header {
+  padding-bottom: 50px;
+}
