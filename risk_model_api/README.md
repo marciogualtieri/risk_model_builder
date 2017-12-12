@@ -10,6 +10,18 @@ At the moment risk types can be created either by calling the models API in the 
 
 <kbd>![Risks App ER Diagram](../images/run_api.gif)</kbd>
 
+## Demo the App
+
+You may demo the API (deployed to Amazon's AWS with [zappa](https://github.com/Miserlou/Zappa)) using the following links:
+
+* [/risks/](https://yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com/production/risks/) (All Risks)
+* [/risks/70](https://yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com/production/risks/70/) (Only Risk with ID 70)
+
+You may also use [curl](https://curl.haxx.se/):
+
+     curl -H 'Accept: application/json; indent=4' https://yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com/production/risks/
+     curl -H 'Accept: application/json; indent=4' https://yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com/production/risks/70/
+
 ## ER Diagram
 
 <kbd>![Risks App ER Diagram](../images/risks_er_diagram.png)</kbd>
@@ -40,7 +52,11 @@ Until the last step is completed, risk type is an invalid record, but we need to
 
 ## Dependencies
 
-This app has been developed with Python 3.5.2. Additionally, the following modules are required:
+This app has been developed with Python 3.6. To install all its dependencies in one step:
+
+    pip install -r requirements.txt 
+
+You may also use the instructions in the sections that follow for details on each one of the project's dependencies.
 
 ### Django & Django REST Framework
 
@@ -61,7 +77,11 @@ Interactive sessions are also useful, thus the project uses [django-extensions](
 
 ### Django CORS Headers
 
-We need to add CORS (Cross-Origin Resource Sharing) headers to responses so the UI can access the REST resources. Luckyly there's a Django module for that: [django-cors-headers](https://github.com/ottoyiu/django-cors-headers). You will also need add the following configuration to `settings.py`:
+We need to add CORS (Cross-Origin Resource Sharing) headers to responses so the UI can access the REST resources. Luckyly there's a Django module for that: [django-cors-headers](https://github.com/ottoyiu/django-cors-headers).
+
+    sudo pip install django-cors-headers
+
+You will also need add the following configuration to `settings.py`:
 
 
     INSTALLED_APPS = (
@@ -156,7 +176,7 @@ To start the API in your local computer:
 
     python manage.py runserver
 
-Here are some exemple calls to the API using [curl](https://curl.haxx.se/):
+Here are some example calls to the API using [curl](https://curl.haxx.se/):
 
     curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/risks/
     curl -H 'Accept: application/json; indent=4' http://127.0.0.1:8000/risks/70/
@@ -271,3 +291,50 @@ And add the following configuration to your settings.py:
         '--cover-html',
         '--cover-html-dir=reports',
     ]
+
+### Deployment to AWS
+
+We will be using [zappa](https://github.com/Miserlou/Zappa) for this purpose. You will need valid AWS credentials to follow these instructions.
+
+#### Creating a Virtual Environment
+
+Zappa requires a virtual environment to run. To create one:
+
+    virtualenv --python=/usr/local/bin/python3 prod_env
+
+An environment named `prod_env` will be created.
+
+To activate the environment:
+
+    source prod_env/bin/activate
+
+Once in the environment, install all project dependencies:
+
+    pip install -r requirements.txt
+
+Make sure the service works locally in the virtual environment:
+
+    python manage.py runserver
+
+Once you sure the environment contains all dependencies, you're ready to create zappa's configuration for the project:
+
+    zappa init
+
+Just follow the instructions (for most of them, you only need to accept the default values).
+
+To deploy the app to AWS (supposing you named your configuration 'production'):
+
+    zappa deploy production
+
+To tail the service logs:
+
+    zappa tail production
+
+To undeploy the app:
+
+    zappa undeploy production
+
+Once you have completed this tasks, to exit the virtual environment:
+
+    deactivate
+

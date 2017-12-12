@@ -1,0 +1,10 @@
+django
+django-rest-framework
+django-extensions
+django-cors-headers
+django-nose
+jsonschema
+zappa
+toml
+flask
+werkzeug

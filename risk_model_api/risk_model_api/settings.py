@@ -25,7 +25,7 @@ SECRET_KEY = '0n$_sr&$h8!eej5rp3u#$bh@wx4=@@2hba)8efd(^=@7a&o8_i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost:8080', 'yyb8o4lyj9.execute-api.eu-west-1.amazonaws.com']
 
 
 # Application definition
@@ -73,9 +73,7 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'localhost:8080',
-)
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'risk_model_api.urls'
 

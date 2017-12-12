@@ -4,3 +4,6 @@ __pycache__
 .coverage
 reports
 db.sqlite3
+prod_env
+zappa_settings.json
+npm-debug.log
