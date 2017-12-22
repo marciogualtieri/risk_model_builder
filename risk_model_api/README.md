@@ -32,7 +32,7 @@ The purpose of this app is showcasing my web development skills with Python (spe
 
 This app is a back-end service (JSON REST), which stores the definition of risk types. A definition consists of a name, a description and one or more fields. A fields can be a text, a number, a date or an enumeration.
 
-At the moment risk types can be created either by calling the models from the Django API in an interactive shell or by submiting a JSON definition for the risk type through a POST request. There's no UI to create risk types at the moment. The UI only builds application forms from the risk type definitions retrieved from the API. For more details on the UI take a look [here](risk_model_ui/README.md).
+At the moment risk types can be created either by calling the models from the Django API in an interactive shell or by submiting a JSON definition for the risk type through a POST request. There's no UI to create risk types at the moment. The UI only builds application forms from the risk type definitions retrieved from the API. For more details on the UI take a look [here](../risk_model_ui/README.md).
 
 <kbd>![Risks App ER Diagram](../images/run_api.gif)</kbd>
 
