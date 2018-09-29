@@ -46,31 +46,31 @@ The command above should output something similar to the following in the termin
 
     > risk_model_ui@1.0.0 test /home/gualtief/workspace/BriteCore/risk_model_builder/risk_model_ui
     > karma start test/unit/karma.conf.js --single-run
-     
+
     11 12 2017 21:00:16.837:INFO [karma]: Karma v1.7.1 server started at http://0.0.0.0:9876/
     11 12 2017 21:00:16.840:INFO [launcher]: Launching browser Chrome with unlimited concurrency
     11 12 2017 21:00:16.848:INFO [launcher]: Starting browser Chrome
     11 12 2017 21:00:18.708:INFO [Chrome 61.0.3163 (Linux 0.0.0)]: Connected on socket Rmgijd2P37RuwNsbAAAA with id 50736339
-     
+
       FieldForm.vue
         ✓ should render a field form
-     
+
       FieldInput.vue
         ✓ should render a text field input
         ✓ should render a numeric field input
         ✓ should render a date field input
         ✓ should render a enum field input
-     
+
       RiskItem.vue
         ✓ should render a risk item
-     
+
       RiskList.vue
         ✓ should render a risk list
-     
+
     Chrome 61.0.3163 (Linux 0.0.0): Executed 7 of 7 SUCCESS (0.114 secs / 0.081 secs)
     TOTAL: 7 SUCCESS
-     
-     
+
+
     =============================== Coverage summary ===============================
     Statements   : 90.82% ( 267/294 )
     Branches     : 50% ( 8/16 )
@@ -94,7 +94,7 @@ To run the UI with hot reload locally:
 
 To build for production with minification:
 
-    run build
+    npm run build
 
 ## Developer's Guide
 
@@ -128,7 +128,7 @@ Add the following imports to `main.js`:
     import BootstrapVue from 'bootstrap-vue'
     import 'bootstrap/dist/css/bootstrap.css'
     import 'bootstrap-vue/dist/bootstrap-vue.css'
-     
+
     Vue.use(BootstrapVue);
 
 ### jQuery
@@ -140,10 +140,10 @@ The easiest way is to use [unpkg](https://unpkg.com/#/). Just add the following 
 But the recommended way is adding the following code to `main.js` (for consistency sake):
 
     import jQuery from 'jquery';
-     
+
     window.jQuery = jQuery;
     window.$ = jQuery;
-     
+
     Vue.use(BootstrapVue);
     Vue.use(VueRouter);
 
