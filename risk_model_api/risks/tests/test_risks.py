@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from risks.tests.test_utils import TestUtils
 
+
 class RiskViewSetTests(APITestCase, TestUtils):
 
     fixtures = ['fixtures/test_data.json']
